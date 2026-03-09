@@ -41,7 +41,7 @@
 
 ```bash
 brew install xcodegen          # 只需一次
-git clone https://github.com/zhaojiapeng/codextoken.git
+git clone https://github.com/Zhao73/codextoken.git
 cd codextoken
 xcodegen generate
 open CodexToken.xcodeproj      # ⌘R 编译运行

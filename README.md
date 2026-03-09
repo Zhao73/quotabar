@@ -41,7 +41,7 @@ If you use multiple OpenAI / Codex accounts (personal, work, test keys…), you 
 
 ```bash
 brew install xcodegen          # one-time
-git clone https://github.com/zhaojiapeng/codextoken.git
+git clone https://github.com/Zhao73/codextoken.git
 cd codextoken
 xcodegen generate
 open CodexToken.xcodeproj      # ⌘R to build & run
