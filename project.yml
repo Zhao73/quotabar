@@ -1,0 +1,73 @@
+name: CodexToken
+options:
+  minimumXcodeGenVersion: 2.38.0
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: 6.0
+    MACOSX_DEPLOYMENT_TARGET: 14.0
+    MARKETING_VERSION: 0.1.0
+    CURRENT_PROJECT_VERSION: 1
+    DEVELOPMENT_TEAM: ""
+targets:
+  CodexTokenCore:
+    type: framework
+    platform: macOS
+    sources:
+      - path: Sources/CodexTokenCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.zhaojiapeng.CodexToken.core
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_NAME: CodexTokenCore
+  CodexToken:
+    type: application
+    platform: macOS
+    sources:
+      - path: Sources/CodexTokenApp
+    resources:
+      - path: Resources
+    dependencies:
+      - target: CodexTokenCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.zhaojiapeng.CodexToken
+        PRODUCT_NAME: CodexToken
+        GENERATE_INFOPLIST_FILE: YES
+        INFOPLIST_KEY_CFBundleDisplayName: CodexToken
+        INFOPLIST_KEY_LSUIElement: YES
+        CODE_SIGN_STYLE: Automatic
+    postBuildScripts:
+      - name: Copy Localization Strings
+        basedOnDependencyAnalysis: false
+        script: |
+          set -euo pipefail
+          RES_DIR="${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}"
+          mkdir -p "${RES_DIR}/en.lproj" "${RES_DIR}/zh-Hans.lproj"
+          cp "${SRCROOT}/Resources/en.lproj/Localizable.strings" "${RES_DIR}/en.lproj/Localizable.strings"
+          cp "${SRCROOT}/Resources/zh-Hans.lproj/Localizable.strings" "${RES_DIR}/zh-Hans.lproj/Localizable.strings"
+  CodexTokenCoreTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: Tests/CodexTokenCoreTests
+    dependencies:
+      - target: CodexTokenCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.zhaojiapeng.CodexToken.tests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_HOST: ""
+schemes:
+  CodexTokenCore:
+    build:
+      targets:
+        CodexTokenCore: all
+    test:
+      targets:
+        - CodexTokenCoreTests
+  CodexToken:
+    build:
+      targets:
+        CodexTokenCore: all
+        CodexToken: all
