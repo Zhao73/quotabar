@@ -1,0 +1,78 @@
+<svg width="1600" height="920" viewBox="0 0 1600 920" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="160" y1="80" x2="1430" y2="860" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#1E293B"/>
+    </linearGradient>
+    <linearGradient id="panel" x1="340" y1="120" x2="1290" y2="800" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1F2937"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#60A5FA"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+    <linearGradient id="teal" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#5EEAD4"/>
+      <stop offset="1" stop-color="#0F766E"/>
+    </linearGradient>
+    <filter id="shadow" x="0" y="0" width="1600" height="920" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="22" stdDeviation="30" flood-color="#020617" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <rect width="1600" height="920" rx="44" fill="url(#bg)"/>
+  <circle cx="1370" cy="110" r="180" fill="#2563EB" fill-opacity="0.14"/>
+  <circle cx="220" cy="820" r="250" fill="#7C3AED" fill-opacity="0.12"/>
+  <rect x="72" y="68" width="1456" height="784" rx="34" fill="#0B1220" stroke="#334155" stroke-width="2" filter="url(#shadow)"/>
+  <rect x="108" y="108" width="1384" height="104" rx="28" fill="#111827" stroke="#374151"/>
+  <text x="160" y="172" fill="#F8FAFC" font-size="34" font-family="Arial, Helvetica, sans-serif" font-weight="700">QuotaBar</text>
+  <text x="381" y="172" fill="#94A3B8" font-size="24" font-family="Arial, Helvetica, sans-serif">menu bar command center for Codex CLI</text>
+  <rect x="1160" y="132" width="256" height="52" rx="26" fill="#0F172A" stroke="#475569"/>
+  <text x="1196" y="166" fill="#E2E8F0" font-size="23" font-family="Arial, Helvetica, sans-serif">Local-first</text>
+  <circle cx="1344" cy="158" r="8" fill="#22C55E"/>
+
+  <rect x="116" y="244" width="704" height="548" rx="28" fill="url(#panel)" stroke="#334155"/>
+  <rect x="148" y="278" width="204" height="56" rx="20" fill="#374151"/>
+  <rect x="366" y="278" width="204" height="56" rx="20" fill="url(#blue)"/>
+  <rect x="584" y="278" width="204" height="56" rx="20" fill="#374151"/>
+  <text x="206" y="314" fill="#E5E7EB" font-size="28" font-family="Arial, Helvetica, sans-serif" font-weight="700">Overview</text>
+  <text x="447" y="314" fill="white" font-size="28" font-family="Arial, Helvetica, sans-serif" font-weight="700">Codex</text>
+  <text x="639" y="314" fill="#E5E7EB" font-size="28" font-family="Arial, Helvetica, sans-serif" font-weight="700">Claude</text>
+
+  <text x="148" y="418" fill="#F8FAFC" font-size="68" font-family="Georgia, Times New Roman, serif" font-style="italic" font-weight="700">Codex</text>
+  <text x="150" y="470" fill="#94A3B8" font-size="28" font-family="Arial, Helvetica, sans-serif">Updated moments ago</text>
+  <rect x="150" y="504" width="176" height="48" rx="24" fill="#1E3A8A" fill-opacity="0.24"/>
+  <text x="183" y="536" fill="#60A5FA" font-size="26" font-family="Arial, Helvetica, sans-serif" font-weight="700">CLI Active</text>
+  <rect x="338" y="504" width="110" height="48" rx="24" fill="#7C3AED" fill-opacity="0.2"/>
+  <text x="374" y="536" fill="#C4B5FD" font-size="26" font-family="Arial, Helvetica, sans-serif" font-weight="700">Team</text>
+
+  <rect x="150" y="598" width="636" height="146" rx="26" fill="#111827" stroke="#334155"/>
+  <text x="182" y="646" fill="#F8FAFC" font-size="34" font-family="Arial, Helvetica, sans-serif" font-weight="700">Session Window</text>
+  <rect x="182" y="672" width="572" height="18" rx="9" fill="#374151"/>
+  <rect x="182" y="672" width="416" height="18" rx="9" fill="url(#blue)"/>
+  <text x="182" y="730" fill="#F8FAFC" font-size="54" font-family="Arial, Helvetica, sans-serif" font-weight="800">82% left</text>
+  <text x="610" y="730" fill="#CBD5E1" font-size="28" font-family="Arial, Helvetica, sans-serif" text-anchor="end">Resets in 4h 50m</text>
+
+  <rect x="858" y="244" width="600" height="548" rx="28" fill="#0B1220" stroke="#334155"/>
+  <text x="900" y="304" fill="#F8FAFC" font-size="34" font-family="Arial, Helvetica, sans-serif" font-weight="700">Why teams use it</text>
+  <rect x="900" y="338" width="248" height="150" rx="24" fill="#111827" stroke="#334155"/>
+  <rect x="1168" y="338" width="248" height="150" rx="24" fill="#111827" stroke="#334155"/>
+  <rect x="900" y="510" width="248" height="150" rx="24" fill="#111827" stroke="#334155"/>
+  <rect x="1168" y="510" width="248" height="150" rx="24" fill="#111827" stroke="#334155"/>
+  <text x="928" y="390" fill="#F8FAFC" font-size="28" font-family="Arial, Helvetica, sans-serif" font-weight="700">Safe Switching</text>
+  <text x="928" y="430" fill="#94A3B8" font-size="22" font-family="Arial, Helvetica, sans-serif">Validate and rollback on bad sessions.</text>
+  <text x="1196" y="390" fill="#F8FAFC" font-size="28" font-family="Arial, Helvetica, sans-serif" font-weight="700">Remarks</text>
+  <text x="1196" y="430" fill="#94A3B8" font-size="22" font-family="Arial, Helvetica, sans-serif">Label every saved account clearly.</text>
+  <text x="928" y="562" fill="#F8FAFC" font-size="28" font-family="Arial, Helvetica, sans-serif" font-weight="700">Isolated CLI</text>
+  <text x="928" y="602" fill="#94A3B8" font-size="22" font-family="Arial, Helvetica, sans-serif">Launch per-account CODEX_HOME sessions.</text>
+  <text x="1196" y="562" fill="#F8FAFC" font-size="28" font-family="Arial, Helvetica, sans-serif" font-weight="700">Localized UI</text>
+  <text x="1196" y="602" fill="#94A3B8" font-size="22" font-family="Arial, Helvetica, sans-serif">English, 中文, 日本語, 한국어, Español and more.</text>
+
+  <rect x="900" y="694" width="520" height="52" rx="26" fill="#111827" stroke="#334155"/>
+  <rect x="922" y="709" width="168" height="22" rx="11" fill="url(#teal)"/>
+  <rect x="1110" y="709" width="102" height="22" rx="11" fill="#A855F7"/>
+  <rect x="1234" y="709" width="154" height="22" rx="11" fill="#EF4444"/>
+  <text x="922" y="786" fill="#94A3B8" font-size="22" font-family="Arial, Helvetica, sans-serif">CLI</text>
+  <text x="1110" y="786" fill="#94A3B8" font-size="22" font-family="Arial, Helvetica, sans-serif">Claude</text>
+  <text x="1234" y="786" fill="#94A3B8" font-size="22" font-family="Arial, Helvetica, sans-serif">Antigravity</text>
+</svg>

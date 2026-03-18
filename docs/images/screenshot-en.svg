@@ -1,0 +1,30 @@
+<svg width="1200" height="860" viewBox="0 0 1200 860" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="860" rx="34" fill="#111827"/>
+  <rect x="36" y="36" width="1128" height="88" rx="28" fill="#1F2937"/>
+  <rect x="54" y="52" width="200" height="56" rx="20" fill="#374151"/>
+  <rect x="270" y="52" width="200" height="56" rx="20" fill="#2563EB"/>
+  <rect x="486" y="52" width="200" height="56" rx="20" fill="#374151"/>
+  <rect x="702" y="52" width="200" height="56" rx="20" fill="#374151"/>
+  <text x="112" y="88" fill="#E5E7EB" font-size="30" font-family="Arial, Helvetica, sans-serif" font-weight="700">Overview</text>
+  <text x="346" y="88" fill="white" font-size="30" font-family="Arial, Helvetica, sans-serif" font-weight="700">Codex</text>
+  <text x="558" y="88" fill="#E5E7EB" font-size="30" font-family="Arial, Helvetica, sans-serif" font-weight="700">Claude</text>
+  <text x="760" y="88" fill="#E5E7EB" font-size="30" font-family="Arial, Helvetica, sans-serif" font-weight="700">Antigravity</text>
+  <rect x="36" y="154" width="1128" height="180" rx="28" fill="#374151"/>
+  <text x="74" y="244" fill="#FFFFFF" font-size="72" font-family="Georgia, serif" font-style="italic" font-weight="700">Codex</text>
+  <text x="74" y="292" fill="#CBD5E1" font-size="28" font-family="Arial, Helvetica, sans-serif">Updated 5 seconds ago</text>
+  <rect x="684" y="190" width="418" height="92" rx="34" fill="#4B5563"/>
+  <text x="724" y="246" fill="#F8FAFC" font-size="30" font-family="Arial, Helvetica, sans-serif" font-weight="700">client@workspace.com</text>
+  <text x="972" y="290" fill="#E5E7EB" font-size="24" font-family="Arial, Helvetica, sans-serif">Team</text>
+  <rect x="36" y="362" width="1128" height="190" rx="28" fill="#374151"/>
+  <text x="74" y="430" fill="#FFFFFF" font-size="38" font-family="Arial, Helvetica, sans-serif" font-weight="700">Session Window</text>
+  <rect x="74" y="456" width="1052" height="18" rx="9" fill="#6B7280"/>
+  <rect x="74" y="456" width="820" height="18" rx="9" fill="#3B82F6"/>
+  <text x="74" y="528" fill="#FFFFFF" font-size="66" font-family="Arial, Helvetica, sans-serif" font-weight="800">82% remaining</text>
+  <text x="1110" y="528" fill="#CBD5E1" font-size="28" font-family="Arial, Helvetica, sans-serif" text-anchor="end">Resets in 4h 50m</text>
+  <rect x="36" y="580" width="1128" height="190" rx="28" fill="#374151"/>
+  <text x="74" y="648" fill="#FFFFFF" font-size="38" font-family="Arial, Helvetica, sans-serif" font-weight="700">Weekly Window</text>
+  <rect x="74" y="674" width="1052" height="18" rx="9" fill="#6B7280"/>
+  <rect x="74" y="674" width="690" height="18" rx="9" fill="#2DD4BF"/>
+  <text x="74" y="746" fill="#FFFFFF" font-size="66" font-family="Arial, Helvetica, sans-serif" font-weight="800">69% remaining</text>
+  <text x="1110" y="746" fill="#CBD5E1" font-size="28" font-family="Arial, Helvetica, sans-serif" text-anchor="end">Resets in 6d 5h</text>
+</svg>

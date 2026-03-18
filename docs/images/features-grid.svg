@@ -1,0 +1,25 @@
+<svg width="1600" height="840" viewBox="0 0 1600 840" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="840" rx="34" fill="#0F172A"/>
+  <text x="86" y="110" fill="#F8FAFC" font-size="54" font-family="Arial, Helvetica, sans-serif" font-weight="800">Feature Highlights</text>
+  <text x="86" y="154" fill="#94A3B8" font-size="28" font-family="Arial, Helvetica, sans-serif">Built for people who actually juggle multiple Codex identities.</text>
+  <g>
+    <rect x="86" y="212" width="688" height="234" rx="28" fill="#111827" stroke="#334155"/>
+    <text x="128" y="282" fill="#F8FAFC" font-size="34" font-family="Arial, Helvetica, sans-serif" font-weight="700">Validated Account Switching</text>
+    <text x="128" y="334" fill="#CBD5E1" font-size="26" font-family="Arial, Helvetica, sans-serif">Swap the active CLI account, verify the result, and roll back automatically if the target snapshot is stale.</text>
+  </g>
+  <g>
+    <rect x="826" y="212" width="688" height="234" rx="28" fill="#111827" stroke="#334155"/>
+    <text x="868" y="282" fill="#F8FAFC" font-size="34" font-family="Arial, Helvetica, sans-serif" font-weight="700">Localized Interface</text>
+    <text x="868" y="334" fill="#CBD5E1" font-size="26" font-family="Arial, Helvetica, sans-serif">Ship one app for English, 简体中文, 繁體中文, 日本語, 한국어, Español, and Português (Brasil).</text>
+  </g>
+  <g>
+    <rect x="86" y="488" width="688" height="234" rx="28" fill="#111827" stroke="#334155"/>
+    <text x="128" y="558" fill="#F8FAFC" font-size="34" font-family="Arial, Helvetica, sans-serif" font-weight="700">Remarks + Snapshot History</text>
+    <text x="128" y="610" fill="#CBD5E1" font-size="26" font-family="Arial, Helvetica, sans-serif">Name every account clearly, keep local notes, and preserve the current session as a reusable snapshot.</text>
+  </g>
+  <g>
+    <rect x="826" y="488" width="688" height="234" rx="28" fill="#111827" stroke="#334155"/>
+    <text x="868" y="558" fill="#F8FAFC" font-size="34" font-family="Arial, Helvetica, sans-serif" font-weight="700">Isolated CLI Workspaces</text>
+    <text x="868" y="610" fill="#CBD5E1" font-size="26" font-family="Arial, Helvetica, sans-serif">Open dedicated Terminal sessions per account, each with its own CODEX_HOME and copied config.</text>
+  </g>
+</svg>

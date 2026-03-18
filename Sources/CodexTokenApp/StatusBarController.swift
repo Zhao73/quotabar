@@ -17,9 +17,7 @@ final class StatusBarController: NSObject, ObservableObject {
         self.preferences = preferences
         super.init()
         bindState()
-        DispatchQueue.main.async { [weak self] in
-            self?.installStatusItemIfNeeded()
-        }
+        installStatusItemIfNeeded()
     }
 
     @MainActor
@@ -93,6 +91,8 @@ final class StatusBarController: NSObject, ObservableObject {
         )?.withSymbolConfiguration(configuration)
         image?.isTemplate = true
         button.image = image
+        button.title = "QB"
+        button.imagePosition = image == nil ? .imageLeft : .imageLeading
         button.toolTip = viewModel.menuBarTitle
         button.setAccessibilityLabel(viewModel.menuBarTitle)
         button.appearsDisabled = false
@@ -100,7 +100,7 @@ final class StatusBarController: NSObject, ObservableObject {
 
     private func installStatusItemIfNeeded() {
         guard statusItem == nil else { return }
-        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
+        statusItem = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         configurePopover()
         configureStatusItem()
     }

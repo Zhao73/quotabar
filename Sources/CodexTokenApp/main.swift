@@ -1,6 +1,10 @@
 import Cocoa
 
 let application = NSApplication.shared
-let codexTokenAppDelegate = MainActor.assumeIsolated { CodexTokenAppDelegate() }
-application.delegate = codexTokenAppDelegate
-_ = NSApplicationMain(CommandLine.argc, CommandLine.unsafeArgv)
+let delegate = MainActor.assumeIsolated { CodexTokenAppDelegate() }
+application.delegate = delegate
+application.setActivationPolicy(.accessory)
+
+withExtendedLifetime(delegate) {
+    application.run()
+}
