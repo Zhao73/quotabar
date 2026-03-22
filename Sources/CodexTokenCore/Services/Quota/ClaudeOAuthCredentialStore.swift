@@ -1,4 +1,5 @@
 import Foundation
+import Security
 
 public protocol ClaudeOAuthCredentialReading: Sendable {
     func readCredentialData() throws -> Data
@@ -27,7 +28,32 @@ public struct ClaudeOAuthCredentialStore: Sendable {
         }
 
         public func readCredentialData() throws -> Data {
-            try Data(contentsOf: Self.credentialURL)
+            // Try file first (older Claude Code versions)
+            if let fileData = try? Data(contentsOf: Self.credentialURL) {
+                return fileData
+            }
+
+            // Try macOS Keychain (Claude Code 2.x+)
+            let query: [String: Any] = [
+                kSecClass as String: kSecClassGenericPassword,
+                kSecAttrService as String: "Claude Code-credentials",
+                kSecAttrAccount as String: "Claude Code",
+                kSecReturnData as String: true,
+                kSecMatchLimit as String: kSecMatchLimitOne,
+            ]
+
+            var result: AnyObject?
+            let status = SecItemCopyMatching(query as CFDictionary, &result)
+
+            guard status == errSecSuccess, let data = result as? Data else {
+                throw NSError(
+                    domain: "ClaudeOAuthCredentialStore",
+                    code: Int(status),
+                    userInfo: [NSLocalizedDescriptionKey: "Claude credentials not found. Please log in to Claude Code first."]
+                )
+            }
+
+            return data
         }
     }
 
