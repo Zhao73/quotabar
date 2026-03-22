@@ -225,6 +225,21 @@ public struct CodexAppServerQuotaProvider: QuotaProviding {
                 secondaryWindow: makeWindow(rateLimits.secondary)
             )
         } catch {
+            let errorText = error.localizedDescription.lowercased()
+            let authKeywords = ["not logged in", "unauthorized", "auth", "login", "token", "credential", "expired"]
+            let isAuthError = authKeywords.contains(where: { errorText.contains($0) })
+
+            if isAuthError {
+                return QuotaSnapshot(
+                    status: .error,
+                    refreshedAt: account.lastRefreshAt,
+                    sourceLabel: "Codex app-server",
+                    confidence: .high,
+                    warnings: ["needs_relogin"],
+                    errorDescription: "Codex session has expired. Please re-login."
+                )
+            }
+
             return QuotaSnapshot(
                 status: .error,
                 refreshedAt: account.lastRefreshAt,

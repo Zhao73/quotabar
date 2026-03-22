@@ -167,6 +167,10 @@
 "message.noteSaveFailed" = "No se pudo guardar la nota.";
 "message.refreshFailed" = "No se pudieron actualizar las cuentas.";
 "message.sortFailed" = "No se pudo guardar el pedido de la cuenta.";
+"message.tokenExpired" = "La sesión ha expirado. Inicia sesión de nuevo para continuar.";
+"message.tokenExpiringSoon" = "La sesión expirará pronto. Se recomienda volver a iniciar sesión.";
+"message.switchNeedsRelogin" = "La sesión de esta cuenta ha expirado. Inicia sesión de nuevo primero.";
+"message.needsRelogin" = "Requiere relogin";
 "meta.authMode.chatgpt" = "ChatGPT";
 "meta.authMode.api_key" = "API key";
 "meta.authMode.unknown" = "Desconocido";

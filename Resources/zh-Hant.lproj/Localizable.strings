@@ -167,6 +167,10 @@
 "message.noteSaveFailed" = "保存備註失敗。";
 "message.refreshFailed" = "刷新賬號失敗。";
 "message.sortFailed" = "保存賬號排序失敗。";
+"message.tokenExpired" = "會話已過期，請重新登入以繼續使用。";
+"message.tokenExpiringSoon" = "會話即將過期，建議儘快重新登入。";
+"message.switchNeedsRelogin" = "該帳號的會話已過期，請先重新登入。";
+"message.needsRelogin" = "需要重新登入";
 "meta.authMode.chatgpt" = "ChatGPT";
 "meta.authMode.api_key" = "API Key";
 "meta.authMode.unknown" = "未知";

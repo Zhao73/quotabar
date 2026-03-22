@@ -167,6 +167,10 @@
 "message.noteSaveFailed" = "Falha ao salvar a nota.";
 "message.refreshFailed" = "Falha ao atualizar contas.";
 "message.sortFailed" = "Falha ao salvar o pedido da conta.";
+"message.tokenExpired" = "Sessão expirada. Faça login novamente para continuar.";
+"message.tokenExpiringSoon" = "A sessão expirará em breve. Recomendamos fazer login novamente.";
+"message.switchNeedsRelogin" = "A sessão desta conta expirou. Faça login novamente primeiro.";
+"message.needsRelogin" = "Precisa relogar";
 "meta.authMode.chatgpt" = "__TERMO_0__";
 "meta.authMode.api_key" = "__TERMO_0__";
 "meta.authMode.unknown" = "Desconhecido";

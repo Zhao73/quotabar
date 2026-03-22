@@ -167,6 +167,10 @@
 "message.noteSaveFailed" = "保存备注失败。";
 "message.refreshFailed" = "刷新账号失败。";
 "message.sortFailed" = "保存账号排序失败。";
+"message.tokenExpired" = "会话已过期，请重新登录以继续使用。";
+"message.tokenExpiringSoon" = "会话即将过期，建议尽快重新登录。";
+"message.switchNeedsRelogin" = "该账号的会话已过期，请先重新登录。";
+"message.needsRelogin" = "需要重新登录";
 "meta.authMode.chatgpt" = "ChatGPT";
 "meta.authMode.api_key" = "API Key";
 "meta.authMode.unknown" = "未知";

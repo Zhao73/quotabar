@@ -167,6 +167,10 @@
 "message.noteSaveFailed" = "Failed to save the note.";
 "message.refreshFailed" = "Failed to refresh accounts.";
 "message.sortFailed" = "Failed to save the account order.";
+"message.tokenExpired" = "Session expired. Please re-login to continue.";
+"message.tokenExpiringSoon" = "Session will expire soon. Consider re-logging in.";
+"message.switchNeedsRelogin" = "This account's session has expired. Please re-login first.";
+"message.needsRelogin" = "Needs Re-login";
 "meta.authMode.chatgpt" = "ChatGPT";
 "meta.authMode.api_key" = "API key";
 "meta.authMode.unknown" = "Unknown";

@@ -167,6 +167,10 @@
 "message.noteSaveFailed" = "メモの保存に失敗しました。";
 "message.refreshFailed" = "アカウントを更新できませんでした。";
 "message.sortFailed" = "アカウントの注文を保存できませんでした。";
+"message.tokenExpired" = "セッションが期限切れです。再ログインしてください。";
+"message.tokenExpiringSoon" = "セッションがまもなく期限切れになります。再ログインをお勧めします。";
+"message.switchNeedsRelogin" = "このアカウントのセッションが期限切れです。先に再ログインしてください。";
+"message.needsRelogin" = "再ログインが必要";
 "meta.authMode.chatgpt" = "ChatGPT";
 "meta.authMode.api_key" = "API key";
 "meta.authMode.unknown" = "未知";

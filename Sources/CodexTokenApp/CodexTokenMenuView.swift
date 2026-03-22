@@ -14,6 +14,7 @@ struct CodexTokenMenuView: View {
                 NoticeView(notice: notice, preferences: preferences) { action in
                     viewModel.handleNoticeAction(action)
                 }
+                .animation(.spring(response: 0.3, dampingFraction: 0.85), value: viewModel.notice)
             }
 
             content
@@ -192,6 +193,11 @@ private struct OverviewPanelView: View {
 
                                         Spacer()
 
+                                        if viewModel.isTokenExpired(for: row.quota) {
+                                            Image(systemName: "exclamationmark.triangle.fill")
+                                                .font(.system(size: 12))
+                                                .foregroundStyle(.red)
+                                        }
                                         TinyQuotaPill(title: preferences.string("quota.window.5h"), remaining: remainingPercent(for: row.quota.primaryWindow))
                                         TinyQuotaPill(title: preferences.string("quota.window.weekly"), remaining: remainingPercent(for: row.quota.secondaryWindow))
                                     }
@@ -224,7 +230,7 @@ private struct CodexWorkspaceView: View {
     var body: some View {
         ScrollView(.vertical) {
             VStack(alignment: .leading, spacing: 12) {
-                if let summary = viewModel.codexSummary, let row = viewModel.selectedAccountRow {
+                if let summary = viewModel.codexSummary, let row = viewModel.displayedCodexRow {
                     PremiumHeroCard(tint: MenuPalette.codexTint) {
                         VStack(alignment: .leading, spacing: 10) {
                             HStack(alignment: .top, spacing: 10) {
@@ -297,12 +303,19 @@ private struct CodexWorkspaceView: View {
                             }
 
                             HStack(spacing: 6) {
-                                StatusBadge(
-                                    text: statusBadgeTitle(for: row),
-                                    tint: viewModel.isSwitchingAccount(storageKey: row.account.storageKey)
-                                        ? MenuPalette.antigravityTint
-                                        : MenuPalette.codexTint
-                                )
+                                if viewModel.isTokenExpired(for: row.quota) {
+                                    StatusBadge(
+                                        text: preferences.string("message.needsRelogin"),
+                                        tint: .red
+                                    )
+                                } else {
+                                    StatusBadge(
+                                        text: statusBadgeTitle(for: row),
+                                        tint: viewModel.isSwitchingAccount(storageKey: row.account.storageKey)
+                                            ? MenuPalette.antigravityTint
+                                            : MenuPalette.codexTint
+                                    )
+                                }
                                 if row.account.isImportedFromActiveSession {
                                     StatusBadge(text: preferences.string("menu.account.currentSession"), tint: MenuPalette.claudeTint)
                                 }
@@ -335,6 +348,12 @@ private struct CodexWorkspaceView: View {
                         VStack(alignment: .leading, spacing: 10) {
                             SectionHeader(title: preferences.string("section.actions"), eyebrow: "Codex")
 
+                            if viewModel.isTokenExpired(for: row.quota) {
+                                ActionChip(title: preferences.string("menu.relogin"), systemImage: "person.badge.key", tint: .red) {
+                                    viewModel.reloginCurrentCLI()
+                                }
+                            }
+
                             HStack(spacing: 8) {
                                 ActionChip(title: preferences.string("menu.switchAccount"), systemImage: "arrow.left.arrow.right", tint: MenuPalette.codexTint) {
                                     viewModel.cycleAccount()
@@ -355,8 +374,10 @@ private struct CodexWorkspaceView: View {
                                     viewModel.importCurrentSession()
                                 }
 
-                                ActionChip(title: preferences.string("menu.relogin"), systemImage: "person.badge.key", tint: MenuPalette.overviewTint) {
-                                    viewModel.reloginCurrentCLI()
+                                if !viewModel.isTokenExpired(for: row.quota) {
+                                    ActionChip(title: preferences.string("menu.relogin"), systemImage: "person.badge.key", tint: MenuPalette.overviewTint) {
+                                        viewModel.reloginCurrentCLI()
+                                    }
                                 }
 
                                 ActionChip(title: preferences.string("menu.refresh"), systemImage: "arrow.clockwise", tint: MenuPalette.antigravityTint) {
@@ -857,15 +878,28 @@ private struct AccountPickerPopover: View {
                                 ProgressView()
                                     .controlSize(.small)
                                     .tint(MenuPalette.codexTint)
-                            } else if viewModel.isEffectivelyActiveCLI(storageKey: row.account.storageKey) {
+                            } else if viewModel.isDisplayedCodexAccount(storageKey: row.account.storageKey) {
                                 Image(systemName: "checkmark.circle.fill")
                                     .foregroundStyle(MenuPalette.codexTint)
                             }
                         }
 
                         HStack(spacing: 6) {
-                            TinyQuotaPill(title: preferences.string("quota.window.5h"), remaining: remainingPercent(for: row.quota.primaryWindow))
-                            TinyQuotaPill(title: preferences.string("quota.window.weekly"), remaining: remainingPercent(for: row.quota.secondaryWindow))
+                            if viewModel.isTokenExpired(for: row.quota) {
+                                StatusBadge(
+                                    text: preferences.string("message.needsRelogin"),
+                                    tint: .red
+                                )
+                            } else {
+                                TinyQuotaPill(title: preferences.string("quota.window.5h"), remaining: remainingPercent(for: row.quota.primaryWindow))
+                                TinyQuotaPill(title: preferences.string("quota.window.weekly"), remaining: remainingPercent(for: row.quota.secondaryWindow))
+                            }
+                            if viewModel.isEffectivelyActiveCLI(storageKey: row.account.storageKey) {
+                                StatusBadge(
+                                    text: preferences.string("menu.account.activeCLI"),
+                                    tint: MenuPalette.codexTint
+                                )
+                            }
                         }
                     }
                     .padding(10)
@@ -874,7 +908,7 @@ private struct AccountPickerPopover: View {
                 }
                 .buttonStyle(.plain)
                 .disabled(
-                    viewModel.isEffectivelyActiveCLI(storageKey: row.account.storageKey)
+                    viewModel.isDisplayedCodexAccount(storageKey: row.account.storageKey)
                     || viewModel.switchingAccountStorageKey != nil
                 )
             }
@@ -1146,6 +1180,7 @@ private struct ActionChip: View {
     let tint: Color
     var isNeutral = false
     let action: () -> Void
+    @State private var isHovered = false
 
     var body: some View {
         Button(action: action) {
@@ -1158,9 +1193,14 @@ private struct ActionChip: View {
             .foregroundStyle(isNeutral ? tint : Color.white)
             .padding(.horizontal, 11)
             .padding(.vertical, 8)
-            .background((isNeutral ? MenuPalette.pillFill : tint), in: Capsule())
+            .background((isNeutral ? MenuPalette.pillFill : tint).opacity(isHovered ? 0.85 : 1.0), in: Capsule())
+            .scaleEffect(isHovered ? 1.03 : 1.0)
+            .animation(.easeInOut(duration: 0.15), value: isHovered)
         }
         .buttonStyle(.plain)
+        .onHover { hovering in
+            isHovered = hovering
+        }
     }
 }
 
@@ -1229,6 +1269,14 @@ private struct QuotaTrack: View {
     let window: QuotaWindowSnapshot?
     let tint: Color
 
+    private var effectiveTint: Color {
+        guard let window else { return tint }
+        let remaining = 100 - window.usedPercent
+        if remaining <= 10 { return .red }
+        if remaining <= 25 { return .orange }
+        return tint
+    }
+
     var body: some View {
         GeometryReader { proxy in
             ZStack(alignment: .leading) {
@@ -1237,8 +1285,9 @@ private struct QuotaTrack: View {
                 if let window {
                     let remaining = CGFloat(max(0, 100 - window.usedPercent)) / 100
                     Capsule()
-                        .fill(tint.gradient)
+                        .fill(effectiveTint.gradient)
                         .frame(width: max(16, proxy.size.width * remaining))
+                        .animation(.easeInOut(duration: 0.4), value: window.usedPercent)
                 }
             }
         }
@@ -1296,6 +1345,12 @@ private struct NoticeView: View {
 
     var body: some View {
         HStack(alignment: .center, spacing: 10) {
+            if notice.tone == .error || notice.tone == .warning {
+                Image(systemName: notice.tone == .error ? "exclamationmark.triangle.fill" : "clock.badge.exclamationmark")
+                    .font(.system(size: 13, weight: .semibold))
+                    .foregroundStyle(foreground)
+            }
+
             Text(notice.text)
                 .font(.system(size: 11.5, weight: .medium))
                 .foregroundStyle(foreground)
@@ -1306,16 +1361,22 @@ private struct NoticeView: View {
                     actionHandler(action)
                 }
                 .buttonStyle(.plain)
-                .font(.system(size: 10.5, weight: .semibold))
-                .foregroundStyle(foreground)
-                .padding(.horizontal, 10)
+                .font(.system(size: 10.5, weight: .bold))
+                .foregroundStyle(notice.tone == .error ? Color.white : foreground)
+                .padding(.horizontal, 12)
                 .padding(.vertical, 6)
-                .background(Color.white.opacity(0.45), in: Capsule())
+                .background(
+                    notice.tone == .error
+                        ? AnyShapeStyle(foreground)
+                        : AnyShapeStyle(Color.white.opacity(0.45)),
+                    in: Capsule()
+                )
             }
         }
         .padding(.horizontal, 12)
-        .padding(.vertical, 8)
+        .padding(.vertical, 10)
         .background(background, in: RoundedRectangle(cornerRadius: 14, style: .continuous))
+        .transition(.move(edge: .top).combined(with: .opacity))
     }
 
     private var foreground: Color {
@@ -1324,6 +1385,8 @@ private struct NoticeView: View {
             return .blue
         case .success:
             return .green
+        case .warning:
+            return .orange
         case .error:
             return .red
         }

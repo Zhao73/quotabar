@@ -5,6 +5,12 @@ import Foundation
 
 @MainActor
 final class CodexTokenMenuViewModel: ObservableObject {
+    enum TokenStatus {
+        case valid
+        case expiringSoon(minutesLeft: Int)
+        case expired
+    }
+
     enum AccountMoveDirection {
         case up
         case down
@@ -14,6 +20,7 @@ final class CodexTokenMenuViewModel: ObservableObject {
         enum Tone: Equatable {
             case info
             case success
+            case warning
             case error
         }
 
@@ -213,8 +220,14 @@ final class CodexTokenMenuViewModel: ObservableObject {
         if isRefreshing || switchingAccountStorageKey != nil {
             return "arrow.trianglehead.clockwise"
         }
+        if hasAnyExpiredToken {
+            return "exclamationmark.triangle"
+        }
         if notice?.tone == .error {
             return "exclamationmark.circle"
+        }
+        if hasAnyExpiringSoonToken {
+            return "clock.badge.exclamationmark"
         }
         return accounts.contains(where: \.isActiveCLI)
             ? "person.crop.circle.badge.checkmark"
@@ -247,6 +260,22 @@ final class CodexTokenMenuViewModel: ObservableObject {
         return accountRows[selectedAccountIndex]
     }
 
+    var displayedCodexRow: AccountRow? {
+        guard let storageKey = CodexWorkspaceSelection.displayedStorageKey(
+            accounts: accounts,
+            selectedStorageKey: selectedAccountStorageKey,
+            switchingStorageKey: switchingAccountStorageKey
+        ) else {
+            return nil
+        }
+
+        return accountRows.first(where: { $0.account.storageKey == storageKey }) ?? selectedAccountRow
+    }
+
+    var displayedCodexStorageKey: String? {
+        displayedCodexRow?.account.storageKey
+    }
+
     var overviewSummaries: [ProviderSurfaceSummary] {
         [codexSummary, providerSummary(for: .claude), providerSummary(for: .antigravity)].compactMap { $0 }
     }
@@ -260,7 +289,7 @@ final class CodexTokenMenuViewModel: ObservableObject {
     }
 
     var codexSummary: ProviderSurfaceSummary? {
-        guard let row = selectedAccountRow ?? accountRows.first(where: { $0.account.isActiveCLI }) else {
+        guard let row = displayedCodexRow else {
             return nil
         }
 
@@ -312,9 +341,9 @@ final class CodexTokenMenuViewModel: ObservableObject {
     var selectedChartPoints: [ProviderChartPoint] {
         switch selectedTab {
         case .overview:
-            return chartPoints(for: .codex, accountKey: selectedAccountRow?.account.storageKey)
+            return chartPoints(for: .codex, accountKey: displayedCodexRow?.account.storageKey)
         case .codex:
-            return chartPoints(for: .codex, accountKey: selectedAccountRow?.account.storageKey)
+            return chartPoints(for: .codex, accountKey: displayedCodexRow?.account.storageKey)
         case .claude:
             return chartPoints(for: .claude, accountKey: nil)
         case .antigravity:
@@ -484,7 +513,7 @@ final class CodexTokenMenuViewModel: ObservableObject {
     }
 
     func openSelectedCLI() {
-        guard let row = selectedAccountRow else { return }
+        guard let row = displayedCodexRow else { return }
         openCLI(for: row.account)
     }
 
@@ -833,6 +862,45 @@ final class CodexTokenMenuViewModel: ObservableObject {
         )
     }
 
+    func isTokenExpired(for snapshot: QuotaSnapshot) -> Bool {
+        snapshot.warnings.contains("token_expired") || snapshot.warnings.contains("needs_relogin")
+    }
+
+    func isTokenExpiringSoon(for snapshot: QuotaSnapshot) -> Bool {
+        snapshot.warnings.contains("token_expiring_soon")
+    }
+
+    func tokenStatus(for snapshot: QuotaSnapshot) -> TokenStatus {
+        if isTokenExpired(for: snapshot) {
+            return .expired
+        }
+        if isTokenExpiringSoon(for: snapshot) {
+            if let minutesWarning = snapshot.warnings.first(where: { $0.hasPrefix("expires_in_minutes:") }),
+               let minutes = Int(minutesWarning.dropFirst("expires_in_minutes:".count)) {
+                return .expiringSoon(minutesLeft: minutes)
+            }
+            return .expiringSoon(minutesLeft: 0)
+        }
+        return .valid
+    }
+
+    var hasAnyExpiredToken: Bool {
+        for row in accountRows {
+            if isTokenExpired(for: row.quota) { return true }
+        }
+        if let claudeSnapshot = providerSnapshots[.claude], isTokenExpired(for: claudeSnapshot) {
+            return true
+        }
+        return false
+    }
+
+    var hasAnyExpiringSoonToken: Bool {
+        if let claudeSnapshot = providerSnapshots[.claude], isTokenExpiringSoon(for: claudeSnapshot) {
+            return true
+        }
+        return false
+    }
+
     private func warningValue(prefix: String, in snapshot: QuotaSnapshot) -> String? {
         for warning in snapshot.warnings {
             if warning.lowercased().hasPrefix(prefix.lowercased()) {
@@ -933,6 +1001,8 @@ final class CodexTokenMenuViewModel: ObservableObject {
             return .info
         case .success:
             return .success
+        case .warning:
+            return .info
         case .error:
             return .error
         }
@@ -1060,13 +1130,34 @@ final class CodexTokenMenuViewModel: ObservableObject {
             }
             lastUpdatedAt = Date()
 
-            if showSuccessNotice && preferences.showRefreshSuccessNotices {
+            checkTokenHealth()
+
+            if showSuccessNotice && preferences.showRefreshSuccessNotices && notice == nil {
                 notice = Notice(text: preferences.string("message.refreshComplete"), tone: .success)
             }
         } catch {
             guard generation == refreshGeneration else { return }
             switchingAccountStorageKey = nil
             notice = Notice(text: localizedMessage(for: error, fallbackKey: "message.refreshFailed"), tone: .error)
+        }
+    }
+
+    private func checkTokenHealth() {
+        if hasAnyExpiredToken {
+            notice = Notice(
+                text: preferences.string("message.tokenExpired"),
+                tone: .error,
+                action: .reloginCurrentCLI
+            )
+            return
+        }
+
+        if hasAnyExpiringSoonToken {
+            notice = Notice(
+                text: preferences.string("message.tokenExpiringSoon"),
+                tone: .warning,
+                action: .reloginCurrentCLI
+            )
         }
     }
 
@@ -1246,6 +1337,10 @@ final class CodexTokenMenuViewModel: ObservableObject {
         effectiveCLIStorageKey == storageKey
     }
 
+    func isDisplayedCodexAccount(storageKey: String) -> Bool {
+        displayedCodexStorageKey == storageKey
+    }
+
     private var effectiveCLIStorageKey: String? {
         switchingAccountStorageKey ?? accounts.first(where: \.isActiveCLI)?.storageKey
     }
@@ -1285,17 +1380,30 @@ final class CodexTokenMenuViewModel: ObservableObject {
 
         case let .failure(message):
             switchingAccountStorageKey = nil
-            if let previousStorageKey {
-                setSelectedAccount(storageKey: previousStorageKey)
-            } else {
-                reselectAccountIfPossible()
-            }
 
-            notice = Notice(
-                text: message,
-                tone: .error,
-                action: .reloginCurrentCLI
-            )
+            let lowerMessage = message.lowercased()
+            let authKeywords = ["not logged in", "unauthorized", "auth", "login", "token", "expired", "credential"]
+            let isAuthRelated = authKeywords.contains(where: { lowerMessage.contains($0) })
+
+            if isAuthRelated {
+                setSelectedAccount(storageKey: targetStorageKey)
+                notice = Notice(
+                    text: preferences.string("message.switchNeedsRelogin"),
+                    tone: .error,
+                    action: .reloginCurrentCLI
+                )
+            } else {
+                if let previousStorageKey {
+                    setSelectedAccount(storageKey: previousStorageKey)
+                } else {
+                    reselectAccountIfPossible()
+                }
+                notice = Notice(
+                    text: message,
+                    tone: .error,
+                    action: .reloginCurrentCLI
+                )
+            }
             refresh(showSuccessNotice: false)
         }
     }

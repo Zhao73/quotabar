@@ -19,9 +19,53 @@ public struct ClaudeOAuthQuotaProvider: QuotaProviding {
     public func snapshot(for account: CodexAccount) async -> QuotaSnapshot {
         do {
             let credentials = try credentialStore.load()
+
+            if credentials.isExpired {
+                return QuotaSnapshot(
+                    status: .error,
+                    refreshedAt: Date(),
+                    sourceLabel: "Claude OAuth",
+                    confidence: .high,
+                    warnings: ["token_expired"],
+                    errorDescription: "Claude OAuth token has expired. Please re-login."
+                )
+            }
+
+            if credentials.isExpiringSoon {
+                let usage = try await usageFetcher.fetchUsage(accessToken: credentials.accessToken)
+                let snapshot = Self.makeSnapshot(from: usage, plan: credentials.rateLimitTier)
+                var warnings = snapshot.warnings
+                warnings.append("token_expiring_soon")
+                if let minutes = credentials.expiresInMinutes {
+                    warnings.append("expires_in_minutes:\(minutes)")
+                }
+                return QuotaSnapshot(
+                    status: snapshot.status,
+                    value: snapshot.value,
+                    unit: snapshot.unit,
+                    refreshedAt: snapshot.refreshedAt,
+                    sourceLabel: snapshot.sourceLabel,
+                    confidence: snapshot.confidence,
+                    warnings: warnings,
+                    primaryWindow: snapshot.primaryWindow,
+                    secondaryWindow: snapshot.secondaryWindow
+                )
+            }
+
             let usage = try await usageFetcher.fetchUsage(accessToken: credentials.accessToken)
             return Self.makeSnapshot(from: usage, plan: credentials.rateLimitTier)
         } catch {
+            let isAuthError = (error as NSError).code == 1 && (error as NSError).domain == "claude"
+            if isAuthError {
+                return QuotaSnapshot(
+                    status: .error,
+                    refreshedAt: Date(),
+                    sourceLabel: "Claude OAuth",
+                    confidence: .high,
+                    warnings: ["token_expired"],
+                    errorDescription: "Claude OAuth authentication failed. Please re-login."
+                )
+            }
             return QuotaSnapshot(
                 status: .unavailable,
                 refreshedAt: account.lastRefreshAt,

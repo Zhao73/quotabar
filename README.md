@@ -36,7 +36,7 @@ QuotaBar turns that into a menu bar workflow that feels deliberate instead of ma
 </td>
 <td width="33%" valign="top">
   <strong>Choose by quota</strong><br>
-  Compare 5-hour and weekly windows before you spend the wrong account.
+  Compare 5-hour and weekly windows before you spend the wrong account. See at a glance which accounts need re-login.
 </td>
 <td width="33%" valign="top">
   <strong>Keep sessions isolated</strong><br>
@@ -70,6 +70,8 @@ QuotaBar turns that into a menu bar workflow that feels deliberate instead of ma
 - Attach local remarks to every account so names stay recognizable
 - Open isolated CLI sessions for any saved account
 - Refresh quota windows and provider diagnostics without leaving the menu bar
+- Get proactive warnings when sessions expire or need re-login
+- One-click re-login when a token has expired, without leaving QuotaBar
 - Manage language, startup behavior, diagnostics, and account storage from settings
 
 ## Built-in languages

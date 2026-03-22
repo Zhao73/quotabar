@@ -173,7 +173,7 @@ final class StatusBarController: NSObject, ObservableObject {
             )
             item.target = self
             item.representedObject = row.account.storageKey
-            item.state = viewModel.isEffectivelyActiveCLI(storageKey: row.account.storageKey) ? .on : .off
+            item.state = viewModel.isDisplayedCodexAccount(storageKey: row.account.storageKey) ? .on : .off
             item.isEnabled = viewModel.switchingAccountStorageKey == nil
             submenu.addItem(item)
         }

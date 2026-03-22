@@ -77,6 +77,23 @@ public struct ClaudeOAuthCredentials: Codable, Sendable {
         case rateLimitTier
     }
 
+    public var isExpired: Bool {
+        guard let expiresAt else { return false }
+        return expiresAt <= Date()
+    }
+
+    public var expiresInMinutes: Int? {
+        guard let expiresAt else { return nil }
+        let interval = expiresAt.timeIntervalSince(Date())
+        guard interval > 0 else { return 0 }
+        return Int(interval / 60)
+    }
+
+    public var isExpiringSoon: Bool {
+        guard let minutes = expiresInMinutes else { return false }
+        return minutes > 0 && minutes <= 30
+    }
+
     public init(
         accessToken: String,
         refreshToken: String?,
