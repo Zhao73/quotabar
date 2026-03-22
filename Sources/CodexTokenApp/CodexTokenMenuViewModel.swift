@@ -553,6 +553,36 @@ final class CodexTokenMenuViewModel: ObservableObject {
         }
     }
 
+    func copyAccountEmail() {
+        guard let row = displayedCodexRow else { return }
+        let text = row.account.email ?? row.account.accountID ?? row.account.displayName
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(text, forType: .string)
+        notice = Notice(text: preferences.string("message.emailCopied"), tone: .success)
+    }
+
+    func copyQuotaSummary() {
+        guard let row = displayedCodexRow else { return }
+        var lines: [String] = []
+        lines.append("Account: \(row.account.email ?? row.account.displayName)")
+        if let primary = row.quota.primaryWindow {
+            lines.append("5h: \(max(0, 100 - primary.usedPercent))% remaining")
+        }
+        if let secondary = row.quota.secondaryWindow {
+            lines.append("Weekly: \(max(0, 100 - secondary.usedPercent))% remaining")
+        }
+        if let refreshed = row.quota.refreshedAt {
+            lines.append("Updated: \(formattedTimestamp(refreshed))")
+        }
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(lines.joined(separator: "\n"), forType: .string)
+        notice = Notice(text: preferences.string("message.quotaCopied"), tone: .success)
+    }
+
+    func refreshAllProviders() {
+        refresh(showSuccessNotice: true)
+    }
+
     func revealCodexDirectory() {
         openDirectory(paths.codexDirectory)
     }

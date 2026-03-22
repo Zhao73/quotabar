@@ -171,6 +171,13 @@
 "message.tokenExpiringSoon" = "La sesión expirará pronto. Se recomienda volver a iniciar sesión.";
 "message.switchNeedsRelogin" = "La sesión de esta cuenta ha expirado. Inicia sesión de nuevo primero.";
 "message.needsRelogin" = "Requiere relogin";
+"message.emailCopied" = "Email de la cuenta copiado al portapapeles.";
+"message.quotaCopied" = "Resumen de cuota copiado al portapapeles.";
+"menu.copyEmail" = "Copiar email";
+"menu.copyQuota" = "Copiar cuota";
+"meta.label.authMode" = "Autenticación";
+"meta.label.email" = "Email";
+"meta.label.provider" = "Proveedor";
 "meta.authMode.chatgpt" = "ChatGPT";
 "meta.authMode.api_key" = "API key";
 "meta.authMode.unknown" = "Desconocido";

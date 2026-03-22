@@ -171,6 +171,13 @@
 "message.tokenExpiringSoon" = "세션이 곧 만료됩니다. 다시 로그인하는 것을 권장합니다.";
 "message.switchNeedsRelogin" = "이 계정의 세션이 만료되었습니다. 먼저 다시 로그인해 주세요.";
 "message.needsRelogin" = "재로그인 필요";
+"message.emailCopied" = "계정 이메일이 클립보드에 복사되었습니다.";
+"message.quotaCopied" = "할당량 요약이 클립보드에 복사되었습니다.";
+"menu.copyEmail" = "이메일 복사";
+"menu.copyQuota" = "할당량 복사";
+"meta.label.authMode" = "인증";
+"meta.label.email" = "이메일";
+"meta.label.provider" = "제공자";
 "meta.authMode.chatgpt" = "ChatGPT";
 "meta.authMode.api_key" = "API key";
 "meta.authMode.unknown" = "알려지지 않은";

@@ -326,6 +326,25 @@ private struct CodexWorkspaceView: View {
                         }
                     }
 
+                    PremiumCard {
+                        HStack(spacing: 12) {
+                            AccountDetailItem(
+                                label: preferences.string("meta.label.authMode"),
+                                value: viewModel.localizedAuthMode(row.account.authMode)
+                            )
+                            Divider().frame(height: 28)
+                            AccountDetailItem(
+                                label: preferences.string("meta.label.email"),
+                                value: row.account.email ?? "—"
+                            )
+                            Divider().frame(height: 28)
+                            AccountDetailItem(
+                                label: preferences.string("meta.label.provider"),
+                                value: row.account.loginProvider ?? "—"
+                            )
+                        }
+                    }
+
                     WindowMetricCard(
                         title: summary.primaryTitle,
                         window: summary.snapshot.primaryWindow,
@@ -382,6 +401,16 @@ private struct CodexWorkspaceView: View {
 
                                 ActionChip(title: preferences.string("menu.refresh"), systemImage: "arrow.clockwise", tint: MenuPalette.antigravityTint) {
                                     viewModel.refresh()
+                                }
+                            }
+
+                            HStack(spacing: 8) {
+                                ActionChip(title: preferences.string("menu.copyEmail"), systemImage: "doc.on.doc", tint: MenuPalette.tealTint) {
+                                    viewModel.copyAccountEmail()
+                                }
+
+                                ActionChip(title: preferences.string("menu.copyQuota"), systemImage: "chart.bar.doc.horizontal", tint: MenuPalette.tealTint) {
+                                    viewModel.copyQuotaSummary()
                                 }
                             }
 
@@ -1076,9 +1105,9 @@ private struct PremiumCard<Content: View>: View {
     var fill: Color = MenuPalette.softCard
     var stroke: Color = MenuPalette.stroke
     var cornerRadius: CGFloat = 20
-    var shadowOpacity: Double = 0.04
-    var shadowRadius: CGFloat = 10
-    var shadowY: CGFloat = 6
+    var shadowOpacity: Double = 0.03
+    var shadowRadius: CGFloat = 8
+    var shadowY: CGFloat = 4
     @ViewBuilder let content: Content
 
     var body: some View {
@@ -1088,7 +1117,11 @@ private struct PremiumCard<Content: View>: View {
         .padding(16)
         .background(
             RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                .fill(fill)
+                .fill(.ultraThinMaterial)
+                .overlay(
+                    RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
+                        .fill(fill)
+                )
                 .overlay(
                     RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                         .stroke(stroke, lineWidth: 0.8)
@@ -1219,6 +1252,24 @@ private struct TinyQuotaPill: View {
         .padding(.horizontal, 7)
         .padding(.vertical, 4)
         .background(MenuPalette.pillFill, in: Capsule())
+    }
+}
+
+private struct AccountDetailItem: View {
+    let label: String
+    let value: String
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(label)
+                .font(.system(size: 9.5, weight: .medium))
+                .foregroundStyle(MenuPalette.textMuted)
+            Text(value)
+                .font(.system(size: 11.5, weight: .semibold))
+                .foregroundStyle(MenuPalette.textPrimary)
+                .lineLimit(1)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
@@ -1409,22 +1460,22 @@ private struct NoticeView: View {
 }
 
 private enum MenuPalette {
-    static let canvas = adaptive(light: NSColor(calibratedWhite: 0.985, alpha: 1), dark: NSColor(calibratedRed: 0.12, green: 0.13, blue: 0.15, alpha: 1))
-    static let softCard = adaptive(light: .white, dark: NSColor(calibratedRed: 0.17, green: 0.18, blue: 0.21, alpha: 1))
-    static let heroCard = adaptive(light: NSColor(calibratedWhite: 0.995, alpha: 1), dark: NSColor(calibratedRed: 0.19, green: 0.20, blue: 0.23, alpha: 1))
-    static let tabFill = adaptive(light: NSColor(calibratedWhite: 0.95, alpha: 1), dark: NSColor(calibratedRed: 0.21, green: 0.22, blue: 0.26, alpha: 1))
-    static let pillFill = adaptive(light: NSColor(calibratedWhite: 0.96, alpha: 1), dark: NSColor(calibratedRed: 0.23, green: 0.24, blue: 0.28, alpha: 1))
-    static let track = adaptive(light: NSColor(calibratedWhite: 0.92, alpha: 1), dark: NSColor(calibratedRed: 0.27, green: 0.29, blue: 0.34, alpha: 1))
-    static let stroke = adaptive(light: NSColor.black.withAlphaComponent(0.05), dark: NSColor.white.withAlphaComponent(0.08))
-    static let textPrimary = adaptive(light: NSColor(calibratedRed: 0.11, green: 0.12, blue: 0.14, alpha: 1), dark: NSColor(calibratedWhite: 0.96, alpha: 1))
-    static let textSecondary = adaptive(light: NSColor(calibratedRed: 0.42, green: 0.45, blue: 0.50, alpha: 1), dark: NSColor(calibratedWhite: 0.78, alpha: 1))
-    static let textMuted = adaptive(light: NSColor(calibratedRed: 0.60, green: 0.63, blue: 0.67, alpha: 1), dark: NSColor(calibratedWhite: 0.60, alpha: 1))
+    static let canvas = Color.clear
+    static let softCard = adaptive(light: NSColor.white.withAlphaComponent(0.55), dark: NSColor.white.withAlphaComponent(0.06))
+    static let heroCard = adaptive(light: NSColor.white.withAlphaComponent(0.65), dark: NSColor.white.withAlphaComponent(0.08))
+    static let tabFill = adaptive(light: NSColor.black.withAlphaComponent(0.04), dark: NSColor.white.withAlphaComponent(0.06))
+    static let pillFill = adaptive(light: NSColor.black.withAlphaComponent(0.04), dark: NSColor.white.withAlphaComponent(0.08))
+    static let track = adaptive(light: NSColor.black.withAlphaComponent(0.08), dark: NSColor.white.withAlphaComponent(0.10))
+    static let stroke = adaptive(light: NSColor.black.withAlphaComponent(0.08), dark: NSColor.white.withAlphaComponent(0.12))
+    static let textPrimary = adaptive(light: NSColor(calibratedRed: 0.08, green: 0.09, blue: 0.11, alpha: 1), dark: NSColor(calibratedWhite: 0.97, alpha: 1))
+    static let textSecondary = adaptive(light: NSColor(calibratedRed: 0.35, green: 0.38, blue: 0.43, alpha: 1), dark: NSColor(calibratedWhite: 0.75, alpha: 1))
+    static let textMuted = adaptive(light: NSColor(calibratedRed: 0.52, green: 0.55, blue: 0.60, alpha: 1), dark: NSColor(calibratedWhite: 0.55, alpha: 1))
     static let overviewTint = Color(nsColor: .darkGray)
     static let codexTint = Color(nsColor: NSColor(calibratedRed: 0.17, green: 0.43, blue: 1.0, alpha: 1))
     static let claudeTint = Color(nsColor: NSColor(calibratedRed: 0.87, green: 0.49, blue: 0.29, alpha: 1))
     static let antigravityTint = Color(nsColor: NSColor(calibratedRed: 0.55, green: 0.41, blue: 0.94, alpha: 1))
-    static let antigravitySurface = adaptive(light: .white, dark: NSColor(calibratedRed: 0.15, green: 0.16, blue: 0.19, alpha: 1))
-    static let antigravityStroke = adaptive(light: NSColor.black.withAlphaComponent(0.06), dark: NSColor.white.withAlphaComponent(0.08))
+    static let antigravitySurface = adaptive(light: NSColor.white.withAlphaComponent(0.45), dark: NSColor.white.withAlphaComponent(0.04))
+    static let antigravityStroke = adaptive(light: NSColor.black.withAlphaComponent(0.08), dark: NSColor.white.withAlphaComponent(0.10))
     static let tealTint = Color(nsColor: NSColor(calibratedRed: 0.16, green: 0.55, blue: 0.55, alpha: 1))
 
     private static func adaptive(light: NSColor, dark: NSColor) -> Color {

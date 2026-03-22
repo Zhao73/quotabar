@@ -171,6 +171,13 @@
 "message.tokenExpiringSoon" = "Session will expire soon. Consider re-logging in.";
 "message.switchNeedsRelogin" = "This account's session has expired. Please re-login first.";
 "message.needsRelogin" = "Needs Re-login";
+"message.emailCopied" = "Account email copied to clipboard.";
+"message.quotaCopied" = "Quota summary copied to clipboard.";
+"menu.copyEmail" = "Copy Email";
+"menu.copyQuota" = "Copy Quota";
+"meta.label.authMode" = "Auth";
+"meta.label.email" = "Email";
+"meta.label.provider" = "Provider";
 "meta.authMode.chatgpt" = "ChatGPT";
 "meta.authMode.api_key" = "API key";
 "meta.authMode.unknown" = "Unknown";

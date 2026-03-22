@@ -171,6 +171,13 @@
 "message.tokenExpiringSoon" = "A sessão expirará em breve. Recomendamos fazer login novamente.";
 "message.switchNeedsRelogin" = "A sessão desta conta expirou. Faça login novamente primeiro.";
 "message.needsRelogin" = "Precisa relogar";
+"message.emailCopied" = "Email da conta copiado para a área de transferência.";
+"message.quotaCopied" = "Resumo da cota copiado para a área de transferência.";
+"menu.copyEmail" = "Copiar email";
+"menu.copyQuota" = "Copiar cota";
+"meta.label.authMode" = "Autenticação";
+"meta.label.email" = "Email";
+"meta.label.provider" = "Provedor";
 "meta.authMode.chatgpt" = "__TERMO_0__";
 "meta.authMode.api_key" = "__TERMO_0__";
 "meta.authMode.unknown" = "Desconhecido";

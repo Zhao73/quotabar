@@ -171,6 +171,13 @@
 "message.tokenExpiringSoon" = "会话即将过期，建议尽快重新登录。";
 "message.switchNeedsRelogin" = "该账号的会话已过期，请先重新登录。";
 "message.needsRelogin" = "需要重新登录";
+"message.emailCopied" = "账号邮箱已复制到剪贴板。";
+"message.quotaCopied" = "额度摘要已复制到剪贴板。";
+"menu.copyEmail" = "复制邮箱";
+"menu.copyQuota" = "复制额度";
+"meta.label.authMode" = "认证方式";
+"meta.label.email" = "邮箱";
+"meta.label.provider" = "提供商";
 "meta.authMode.chatgpt" = "ChatGPT";
 "meta.authMode.api_key" = "API Key";
 "meta.authMode.unknown" = "未知";

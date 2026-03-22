@@ -171,6 +171,13 @@
 "message.tokenExpiringSoon" = "セッションがまもなく期限切れになります。再ログインをお勧めします。";
 "message.switchNeedsRelogin" = "このアカウントのセッションが期限切れです。先に再ログインしてください。";
 "message.needsRelogin" = "再ログインが必要";
+"message.emailCopied" = "アカウントメールをクリップボードにコピーしました。";
+"message.quotaCopied" = "クォータ概要をクリップボードにコピーしました。";
+"menu.copyEmail" = "メールをコピー";
+"menu.copyQuota" = "クォータをコピー";
+"meta.label.authMode" = "認証方式";
+"meta.label.email" = "メール";
+"meta.label.provider" = "プロバイダー";
 "meta.authMode.chatgpt" = "ChatGPT";
 "meta.authMode.api_key" = "API key";
 "meta.authMode.unknown" = "未知";

@@ -54,11 +54,38 @@ final class StatusBarController: NSObject, ObservableObject {
     private func configurePopover() {
         let rootView = CodexTokenMenuView(viewModel: viewModel, preferences: preferences)
         let hostingController = NSHostingController(rootView: rootView)
+        hostingController.view.wantsLayer = true
+        hostingController.view.layer?.backgroundColor = .clear
+
+        let visualEffect = NSVisualEffectView()
+        visualEffect.translatesAutoresizingMaskIntoConstraints = false
+        visualEffect.material = .hudWindow
+        visualEffect.blendingMode = .behindWindow
+        visualEffect.state = .active
+
+        let containerVC = NSViewController()
+        containerVC.view = NSView()
+        containerVC.view.wantsLayer = true
+        containerVC.view.addSubview(visualEffect)
+        containerVC.view.addSubview(hostingController.view)
+        containerVC.addChild(hostingController)
+
+        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            visualEffect.topAnchor.constraint(equalTo: containerVC.view.topAnchor),
+            visualEffect.bottomAnchor.constraint(equalTo: containerVC.view.bottomAnchor),
+            visualEffect.leadingAnchor.constraint(equalTo: containerVC.view.leadingAnchor),
+            visualEffect.trailingAnchor.constraint(equalTo: containerVC.view.trailingAnchor),
+            hostingController.view.topAnchor.constraint(equalTo: containerVC.view.topAnchor),
+            hostingController.view.bottomAnchor.constraint(equalTo: containerVC.view.bottomAnchor),
+            hostingController.view.leadingAnchor.constraint(equalTo: containerVC.view.leadingAnchor),
+            hostingController.view.trailingAnchor.constraint(equalTo: containerVC.view.trailingAnchor),
+        ])
 
         popover.behavior = .transient
         popover.animates = true
         popover.contentSize = NSSize(width: 520, height: 760)
-        popover.contentViewController = hostingController
+        popover.contentViewController = containerVC
         popover.delegate = self
     }
 

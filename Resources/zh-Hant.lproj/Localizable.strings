@@ -171,6 +171,13 @@
 "message.tokenExpiringSoon" = "會話即將過期，建議儘快重新登入。";
 "message.switchNeedsRelogin" = "該帳號的會話已過期，請先重新登入。";
 "message.needsRelogin" = "需要重新登入";
+"message.emailCopied" = "帳號郵箱已複製到剪貼簿。";
+"message.quotaCopied" = "額度摘要已複製到剪貼簿。";
+"menu.copyEmail" = "複製郵箱";
+"menu.copyQuota" = "複製額度";
+"meta.label.authMode" = "認證方式";
+"meta.label.email" = "郵箱";
+"meta.label.provider" = "提供商";
 "meta.authMode.chatgpt" = "ChatGPT";
 "meta.authMode.api_key" = "API Key";
 "meta.authMode.unknown" = "未知";
