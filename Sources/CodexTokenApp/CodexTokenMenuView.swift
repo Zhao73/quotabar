@@ -669,10 +669,32 @@ private struct ProviderWorkspaceView: View {
                         summaryFormat: preferences.string("utilization.summary")
                     )
                 } else {
-                    EmptyProviderState(
-                        title: provider == .claude ? preferences.string("provider.claude.unavailableTitle") : preferences.string("provider.antigravity.unavailableTitle"),
-                        detail: provider == .claude ? preferences.string("provider.claude.unavailableBody") : preferences.string("provider.antigravity.unavailableBody")
-                    )
+                    PremiumCard {
+                        VStack(alignment: .leading, spacing: 12) {
+                            Text(provider == .claude ? preferences.string("provider.claude.unavailableTitle") : preferences.string("provider.antigravity.unavailableTitle"))
+                                .font(.system(size: 22, weight: .semibold, design: .serif))
+                                .italic()
+                                .foregroundStyle(MenuPalette.textPrimary)
+
+                            Text(provider == .claude ? preferences.string("provider.claude.unavailableBody") : preferences.string("provider.antigravity.unavailableBody"))
+                                .font(.system(size: 12.5, weight: .medium))
+                                .foregroundStyle(MenuPalette.textSecondary)
+                                .fixedSize(horizontal: false, vertical: true)
+
+                            HStack(spacing: 8) {
+                                if provider == .claude {
+                                    ActionChip(title: preferences.string("menu.loginClaude"), systemImage: "person.badge.key", tint: MenuPalette.claudeTint) {
+                                        viewModel.loginClaude()
+                                    }
+                                }
+                                ActionChip(title: preferences.string("menu.refresh"), systemImage: "arrow.clockwise", tint: tint) {
+                                    viewModel.refresh()
+                                }
+                            }
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.vertical, 10)
+                    }
                 }
             }
             .padding(.bottom, 4)
